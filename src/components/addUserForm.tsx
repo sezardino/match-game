@@ -1,9 +1,23 @@
-import React, { useState } from "react";
-import Button from "./button";
+import React, { ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createUser } from "../store/user";
 import Popup from "./popup";
-import Portal from "./Portal";
 
 const Register = () => {
+    const dispatch = useDispatch();
+    const [name, setName] = useState("");
+
+    const changeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+        setName(evt.target.value);
+    };
+
+    const submitHandler = (evt: FormEvent) => {
+        evt.preventDefault();
+        dispatch(createUser(name));
+        setName("");
+    };
+
     return (
         <>
             <Popup triggerLabel="Add User">
@@ -13,13 +27,18 @@ const Register = () => {
                         If you wont to save your settings and play the game, you
                         must enter your name
                     </p>
-                    <form className="register-user__form form form--register">
+                    <form
+                        className="register-user__form form form--register"
+                        onSubmit={submitHandler}
+                    >
                         <label className="form__label">
                             <span className="form__label-text">Name</span>
                             <input
                                 required
                                 type="text"
                                 name="name"
+                                value={name}
+                                onChange={changeHandler}
                                 className="form__input"
                             />
                         </label>

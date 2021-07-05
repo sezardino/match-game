@@ -4,15 +4,28 @@ import "./styles/main.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
+import store from "./store";
+import { Provider } from "react-redux";
 
-ReactDOM.render(
-    <React.StrictMode>
-        <Router>
-            <App />
-        </Router>
-    </React.StrictMode>,
-    document.getElementById("root")
-);
+import "./firebase/init";
+import firebase from "firebase/app";
+let app = false;
+
+firebase.auth().onAuthStateChanged(() => {
+    if (!app) {
+        app = true;
+        ReactDOM.render(
+            <React.StrictMode>
+                <Provider store={store}>
+                    <Router>
+                        <App />
+                    </Router>
+                </Provider>
+            </React.StrictMode>,
+            document.getElementById("root")
+        );
+    }
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
