@@ -1,56 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
+import { FormEvent } from "react";
+import { useDispatch } from "react-redux";
+import { defaultSettings, settingsFormData } from "../helpers/consts";
+import { doSomething } from "../helpers/functions";
+import { updateUser } from "../store/user";
 
 const Settings = () => {
+    const [cards, setCards] = useState(defaultSettings.cards);
+    const [placeholder, setPlaceholder] = useState(defaultSettings.placeholder);
+    const [difficulty, setDifficulty] = useState(defaultSettings.difficulty);
+    const dispatch = useDispatch();
+
+    const handlers = {
+        cards: setCards,
+        placeholder: setPlaceholder,
+        difficulty: setDifficulty,
+    };
+
+    const submitHandler = (evt: FormEvent) => {
+        evt.preventDefault();
+        const settings = { cards, placeholder, difficulty };
+        dispatch(updateUser(settings));
+    };
     return (
         <section className="settings">
             <h1 className="hidden">Settings</h1>
             <div className="settings__form">
-                <form className="settings-form">
-                    <label className="settings-form__label">
-                        <span className="settings-form__label-text">
-                            Game Cards
-                        </span>
-                        <select
-                            name="cards"
-                            id="cards"
-                            className="settings-form__select"
-                        >
-                            <option value="bear">Bear</option>
-                            <option value="dog">Dog</option>
-                            <option value="nature">Nature</option>
-                        </select>
-                    </label>
-                    <label className="settings-form__label">
-                        <span className="settings-form__label-text">
-                            Card Placeholder
-                        </span>
-                        <select
-                            name="placeholders"
-                            id="placeholders"
-                            className="settings-form__select"
-                        >
-                            <option value="canyon">Canyon</option>
-                            <option value="city">City</option>
-                            <option value="forest">Forest</option>
-                            <option value="mounts">Mounts</option>
-                            <option value="shine">Shine</option>
-                        </select>
-                    </label>
-                    <label className="settings-form__label">
-                        <span className="settings-form__label-text">
-                            Difficulty
-                        </span>
-                        <select
-                            name="difficulty"
-                            id="difficulty"
-                            className="settings-form__select"
-                        >
-                            <option value="easy">Easy</option>
-                            <option value="normal">Normal</option>
-                            <option value="insane">Insane</option>
-                            <option value="god">God!</option>
-                        </select>
-                    </label>
+                <form className="settings-form" onSubmit={submitHandler}>
+                    {settingsFormData.map(({ label, slug, options }) => (
+                        <label className="settings-form__label" key={slug}>
+                            <span className="settings-form__label-text">
+                                {label}
+                            </span>
+                            <select
+                                name={slug}
+                                id={slug}
+                                className="settings-form__select"
+                                onChange={(evt) =>
+                                    doSomething({
+                                        obj: handlers,
+                                        property: slug!,
+                                    })(evt.target.value)
+                                }
+                            >
+                                {options.map(({ label, value }) => (
+                                    <option value={value} key={value}>
+                                        {label}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                    ))}
                     <button className="button button--primary settings-form__button">
                         Save
                     </button>

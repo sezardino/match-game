@@ -14,7 +14,8 @@ const Register = () => {
 
     const submitHandler = (evt: FormEvent) => {
         evt.preventDefault();
-        dispatch(createUser(name));
+        const args = { userName: name };
+        dispatch(createUser(args));
         setName("");
     };
 
