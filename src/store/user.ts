@@ -1,69 +1,89 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from ".";
 import Firebase from "../api/firebase";
 import { defaultSettings } from "../helpers/consts";
-import { createUserArgs, ISettings, IUserState } from "../interfaces";
+import {
+    createUserArgs,
+    IAction,
+    ISettings,
+    IUser,
+    IUserState,
+} from "../interfaces";
 
-const createUser = createAsyncThunk(
-    "user/createUser",
-    async ({ userName }: createUserArgs, { getState }) => {
-        const {
-            user: { settings },
-        } = getState() as RootState;
-        const user = await Firebase.createUser({ userName, settings });
-        return user;
-    }
-);
+export const ActionType = {
+    CREATE_USER: "CREATE_USER",
+    UPDATE_SCORE: "UPDATE_SCORE",
+    UPDATE_USER: "UPDATE_USER",
+};
 
-const updateScore = createAsyncThunk(
-    "user/updateScore",
-    async ({ userId, score }: { userId: string; score: number }) => {
-        await Firebase.updateScore(userId, score);
-        return score;
-    }
-);
+export const ActionCreator = {
+    CREATE_USER: (data: IUser) => ({
+        type: ActionType.CREATE_USER,
+        payload: data,
+    }),
+    UPDATE_SCORE: (data: any) => ({
+        type: ActionType.UPDATE_SCORE,
+        payload: data,
+    }),
+    UPDATE_USER: (data: any) => ({
+        type: ActionType.UPDATE_USER,
+        payload: data,
+    }),
+};
 
-const updateUser = createAsyncThunk(
-    "user/updateSettings",
-    async (settings: ISettings, { getState }) => {
-        const { user } = getState() as RootState;
-        if (user.user) {
-            const { userId } = user.user;
-            await Firebase.saveSettings(userId, settings);
-        }
-        return settings;
-    }
-);
+export const ThunkCreator = {
+    createUser:
+        ({ userName }: createUserArgs) =>
+        async (dispatch: any, getState: any) => {
+            const {
+                user: { settings },
+            } = getState();
+            const data = await Firebase.createUser({ userName, settings });
+            dispatch(ActionCreator.CREATE_USER(data));
+        },
+    updateScore:
+        ({ userId, score }: { userId: string; score: number }) =>
+        async (dispatch: any) => {
+            const data = await Firebase.updateScore(userId, score);
+            dispatch(ActionCreator.UPDATE_SCORE(data));
+        },
+    updateUser:
+        (settings: ISettings) => async (dispatch: any, getState: any) => {
+            const { user } = getState();
+            if (user.user) {
+                const { userId } = user.user;
+                await Firebase.saveSettings(userId, settings);
+            }
+            dispatch(ActionCreator.UPDATE_USER(settings));
+        },
+};
 
 const initialState: IUserState = {
     user: null,
     settings: defaultSettings,
 };
 
-const user = createSlice({
-    name: "user",
-    initialState,
-    reducers: {
-        saveSettings: (state, action) => {
-            state.settings = action.payload;
-        },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(createUser.fulfilled, (state, action) => {
-            state.user = action.payload;
-        });
-        builder.addCase(updateScore.fulfilled, (state, action) => {
-            state.user!.score = action.payload;
-        });
-        builder.addCase(updateUser.fulfilled, (state, action) => {
-            if (state.user) {
-                state.user = { ...state.user, ...action.payload };
+const reducer = (
+    state: IUserState = initialState,
+    { type, payload }: IAction
+) => {
+    let user;
+    switch (type) {
+        case ActionType.CREATE_USER:
+            user = payload;
+            return { ...state, user };
+        case ActionType.UPDATE_SCORE:
+            const score = payload;
+            return { ...state, user: { ...state.user, score } };
+        case ActionType.UPDATE_USER:
+            const settings = payload;
+            user = state.user;
+            if (user) {
+                return { ...state, user: { ...user, ...settings } };
+            } else {
+                return { ...state, settings };
             }
-            state.settings = action.payload;
-        });
-    },
-});
+        default:
+            return { ...state };
+    }
+};
 
-export { createUser, updateUser };
-export const { saveSettings } = user.actions;
-export default user.reducer;
+export default reducer;

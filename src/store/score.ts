@@ -1,36 +1,39 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Firebase from "../api/firebase";
+import { IAction, IScoreState, IUser } from "../interfaces";
 
-type user = {
-    userName: string;
-    userId: string;
-    score: number;
-};
-
-interface state {
-    users: Array<user> | null;
-}
-
-const getUsers = createAsyncThunk("score/getUsers", async () => {
-    const users = await Firebase.getUsers();
-    return users as Array<user>;
-});
-
-const initialState: state = {
+const initialState: IScoreState = {
     users: null,
 };
 
-const score = createSlice({
-    name: "score",
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(getUsers.fulfilled, (state, action) => {
-            state.users = action.payload;
-        });
+export const ActionCreator = {
+    GET_USERS: (data: Array<IUser>) => ({
+        type: ActionType.GET_USERS,
+        payload: data,
+    }),
+};
+
+export const ThunkCreator = {
+    getUsers: () => async (dispatch: any) => {
+        const users = await Firebase.getUsers();
+        dispatch(ActionCreator.GET_USERS(users as Array<IUser>));
     },
-});
+};
 
-export { getUsers };
+export const ActionType = {
+    GET_USERS: "GET_USERS",
+};
 
-export default score.reducer;
+const reducer = (
+    state: IScoreState = initialState,
+    { type, payload }: IAction
+) => {
+    switch (type) {
+        case ActionType.GET_USERS:
+            const users = payload;
+            return { ...state, users };
+        default:
+            return state;
+    }
+};
+
+export default reducer;
