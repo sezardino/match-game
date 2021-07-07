@@ -28,7 +28,7 @@ const GamePolygon = () => {
     }, [timer]);
 
     const cardClickHandler = (value: number) => {
-        // dispatch(addToLine(value));
+        dispatch(ActionCreator.ADD_TO_LINE(value));
     };
 
     return (

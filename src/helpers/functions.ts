@@ -52,8 +52,6 @@ const getMathArray = (maxLength: number) => {
 
 export const generatePolygonData = (difficulty: string) => {
     const cardsLength = DIFFICULTY[difficulty];
-    console.log({ difficulty });
-    console.log({ cardsLength });
     const arr = getMathArray(cardsLength);
     return arr;
 };

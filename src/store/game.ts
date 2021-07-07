@@ -12,7 +12,6 @@ const stopTimer = ({ id }: { id: number }) => {
 
 const startGame = (state: IGameState, difficulty: string) => {
     const game = true;
-    console.log(difficulty);
     const gamePolygon = generatePolygonData(difficulty);
     return { ...state, game, gamePolygon };
 };
@@ -22,6 +21,11 @@ const endGame = (state: IGameState) => {
     const message = MESSAGES.WIN;
     stopTimer(state.timer);
     return { ...state, game, message };
+};
+
+const addToLine = (state: IGameState, value: number) => {
+    console.log(value);
+    return state;
 };
 
 const initialState: IGameState = {
@@ -72,8 +76,7 @@ const reducer = (
         case ActionType.END_GAME:
             return endGame(state);
         case ActionType.ADD_TO_LINE:
-            console.log(1);
-            return state;
+            return addToLine(state, payload);
         default:
             return state;
     }
