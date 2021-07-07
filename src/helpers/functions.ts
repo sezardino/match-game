@@ -42,7 +42,7 @@ const getMathArray = (maxLength: number) => {
         do {
             index = getRandNumInRange(0, finalArray.length);
             if (finalArray[index] === null) {
-                finalArray[index] = item;
+                finalArray[index] = { value: item, guessed: false };
                 count++;
             }
         } while (finalArray[index] !== null && count < 2);

@@ -1,7 +1,11 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import ReduxThunk from "redux-thunk";
 
-import { ActionCreator as gameCreator, ActionType as gameType } from "./game";
+import {
+    ActionCreator as gameCreator,
+    ActionType as gameType,
+    ThunkCreator as gameThunk,
+} from "./game";
 import {
     ActionCreator as scoreCreator,
     ActionType as scoreType,
@@ -32,6 +36,7 @@ export const ActionCreator = {
 export const ThunkCreator = {
     ...scoreThunk,
     ...userThunk,
+    ...gameThunk,
 };
 
 const reducer = combineReducers({ user, score, game });

@@ -35,6 +35,7 @@ export interface IAction {
 }
 
 export interface IGameState {
+    difficulty: string;
     game: Boolean;
     gamePolygon: any[] | null;
     moves: any;
@@ -51,4 +52,9 @@ export interface IUser {
 
 export interface IScoreState {
     users: Array<IUser> | null;
+}
+
+export interface ICard {
+    value: number;
+    guessed: Boolean;
 }

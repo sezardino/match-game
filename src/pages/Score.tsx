@@ -14,7 +14,6 @@ const Score = () => {
         dispatch(ThunkCreator.getUsers());
         setLoading(false);
     }, []);
-    console.log(list);
     return (
         <section className="shore">
             <h2 className="shore__title">Best players</h2>

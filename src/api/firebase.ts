@@ -18,13 +18,18 @@ class Firebase implements FirebaseInterface {
     }
 
     async updateScore(userId: string, score: number) {
-        await firebase.database().ref(`/users/${userId}`).update(score);
+        console.log(userId, score);
+        await firebase.database().ref(`/users/${userId}`).update({ score });
     }
 
     async getUsers() {
         const data = await firebase.database().ref("/users/").once("value");
 
-        return this._transformFirebaseData(data.val() || {});
+        const filteredUsers = this._transformFirebaseData(
+            data.val() || {}
+        ).sort((a: any, b: any) => b.score - a.score);
+
+        return filteredUsers;
     }
 
     async saveSettings(userId: string, settings: ISettings) {

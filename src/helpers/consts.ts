@@ -56,3 +56,10 @@ export const MESSAGES = {
     LOSE: "you are lose",
     WIN: "you are won",
 };
+
+export const points: { [key: string]: number } = {
+    easy: 2,
+    normal: 3,
+    insane: 4,
+    god: 5,
+};
