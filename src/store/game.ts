@@ -48,7 +48,10 @@ export const ActionCreator = {
     STOP_TIMER: () => ({ type: ActionType.STOP_TIMER }),
     START_GAME: (payload: string) => ({ type: ActionType.START_GAME, payload }),
     END_GAME: () => ({ type: ActionType.END_GAME }),
-    ADD_TO_LINE: () => ({ type: ActionType.ADD_TO_LINE }),
+    ADD_TO_LINE: (payload: number) => ({
+        type: ActionType.ADD_TO_LINE,
+        payload,
+    }),
 };
 
 const reducer = (
