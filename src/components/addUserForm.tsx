@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser } from "../store/user";
+import { ThunkCreator } from "../store";
 import Popup from "./popup";
 
 const Register = () => {
@@ -12,10 +12,11 @@ const Register = () => {
         setName(evt.target.value);
     };
 
-    const submitHandler = (evt: FormEvent) => {
+    const submitHandler = async (evt: FormEvent) => {
         evt.preventDefault();
         const args = { userName: name };
-        dispatch(createUser(args));
+
+        await dispatch(ThunkCreator.createUser(args));
         setName("");
     };
 
