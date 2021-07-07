@@ -42,3 +42,17 @@ export const settingsFormData = [
         ],
     },
 ];
+
+export const DIFFICULTY: { [key: string]: number } = {
+    easy: 16,
+    normal: 36,
+    insane: 48,
+    god: 60,
+};
+
+export const initialTimer = 5;
+
+export const MESSAGES = {
+    LOSE: "you are lose",
+    WIN: "you are won",
+};
