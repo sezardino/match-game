@@ -6,8 +6,18 @@ import about from "../assets/svg/about.svg";
 import score from "../assets/svg/best.svg";
 import settings from "../assets/svg/settings.svg";
 import AddUserForm from "./addUserForm";
+import { useDispatch, useSelector } from "react-redux";
+import Button from "./button";
+import { ActionCreator } from "../store";
 
 const Header = () => {
+    const user = useSelector((state: any) => state.user);
+    const dispatch = useDispatch();
+
+    const startGameHandler = () => {
+        dispatch(ActionCreator.START_GAME(user.settings.difficulty));
+    };
+
     return (
         <header className="header">
             <div className="header__logo">
@@ -69,7 +79,15 @@ const Header = () => {
                 </nav>
             </div>
             <div className="header__user">
-                <AddUserForm />
+                {!user.user && <AddUserForm />}
+                {user.user && (
+                    <Button
+                        handler={startGameHandler}
+                        extraClass="form__button form__submit button button--primary button--uppercase"
+                    >
+                        Start Game
+                    </Button>
+                )}
             </div>
         </header>
     );

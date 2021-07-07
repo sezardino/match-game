@@ -3,16 +3,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/loader";
-import { RootState } from "../store";
-import { getUsers } from "../store/score";
+import { ThunkCreator } from "../store";
 
 const Score = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
-    const list = useSelector((state: RootState) => state.score.users);
+    const list = useSelector((state: any) => state.score.users);
     useEffect(() => {
         setLoading(true);
-        dispatch(getUsers());
+        dispatch(ThunkCreator.getUsers());
         setLoading(false);
     }, []);
     console.log(list);
@@ -22,7 +21,7 @@ const Score = () => {
             {loading && <Loader />}
             {!loading && list && (
                 <ul className="shore__list">
-                    {list.map(({ userId, userName, score }) => (
+                    {list.map(({ userId, userName, score }: any) => (
                         <li className="shore__item" key={userId}>
                             <div className="user-shore">
                                 <div className="user-shore__wrapper">

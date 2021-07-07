@@ -3,7 +3,7 @@ import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { defaultSettings, settingsFormData } from "../helpers/consts";
 import { doSomething } from "../helpers/functions";
-import { updateUser } from "../store/user";
+import { ThunkCreator } from "../store";
 
 const Settings = () => {
     const [cards, setCards] = useState(defaultSettings.cards);
@@ -20,7 +20,7 @@ const Settings = () => {
     const submitHandler = (evt: FormEvent) => {
         evt.preventDefault();
         const settings = { cards, placeholder, difficulty };
-        dispatch(updateUser(settings));
+        dispatch(ThunkCreator.updateUser(settings));
     };
     return (
         <section className="settings">
