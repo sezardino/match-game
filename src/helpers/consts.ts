@@ -50,7 +50,7 @@ export const DIFFICULTY: { [key: string]: number } = {
     god: 60,
 };
 
-export const initialTimer = 5;
+export const initialTimer = 360;
 
 export const MESSAGES = {
     LOSE: "you are lose",

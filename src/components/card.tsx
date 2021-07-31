@@ -51,7 +51,6 @@ const Card = (props: {
             } ${guessed ? "play-card--valid play-card--open" : ""}`}
             onClick={clickHandler}
         >
-            {value}
             <div className="play-card__image-wrapper">
                 <img
                     src={`../cards/${card}/${value}.svg`}
