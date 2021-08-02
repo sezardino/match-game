@@ -1,12 +1,11 @@
 import React from "react";
-import Header from "./components/header";
+import Header from "../../components/header";
 import { Switch, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Score from "./pages/Score";
-import Settings from "./pages/Settings";
+import Home from "../Home";
+import Score from "../Score";
+import Settings from "../Settings";
 import { useSelector } from "react-redux";
-// import { RootState } from "./store";
-import GamePolygon from "./components/gamePolygon";
+import GamePolygon from "../GamePolygon";
 
 function App() {
     const game = useSelector((state: any) => state.game.game);

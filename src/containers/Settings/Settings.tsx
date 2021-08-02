@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FormEvent } from "react";
 import { useDispatch } from "react-redux";
-import { defaultSettings, settingsFormData } from "../helpers/consts";
-import { doSomething } from "../helpers/functions";
-import { ThunkCreator } from "../store";
+import { defaultSettings, settingsFormData } from "../../helpers/consts";
+import { doSomething } from "../../helpers/functions";
+import { ThunkCreator } from "../../store";
 
 const Settings = () => {
     const [cards, setCards] = useState(defaultSettings.cards);

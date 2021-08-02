@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../components/loader";
-import { ThunkCreator } from "../store";
+import Loader from "../../components/loader";
+import { ThunkCreator } from "../../store";
 
 const Score = () => {
     const dispatch = useDispatch();
